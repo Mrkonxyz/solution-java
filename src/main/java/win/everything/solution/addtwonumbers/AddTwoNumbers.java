@@ -1,4 +1,4 @@
-package org.example.addtwonumbers;
+package win.everything.solution.addtwonumbers;
 
 public class AddTwoNumbers {
 

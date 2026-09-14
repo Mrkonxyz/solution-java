@@ -1,4 +1,4 @@
-package org.example.addtwonumbers;
+package win.everything.solution.addtwonumbers;
 
 import java.util.ArrayList;
 import java.util.List;

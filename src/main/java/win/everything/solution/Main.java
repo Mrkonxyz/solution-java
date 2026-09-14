@@ -1,4 +1,4 @@
-package org.example;
+package win.everything.solution;
 
 import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.model.ZipParameters;

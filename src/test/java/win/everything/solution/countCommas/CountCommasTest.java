@@ -1,4 +1,4 @@
-package org.example.countCommas;
+package win.everything.solution.countCommas;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

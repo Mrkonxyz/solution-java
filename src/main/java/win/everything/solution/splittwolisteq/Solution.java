@@ -1,4 +1,4 @@
-package org.example.splittwolisteq;
+package win.everything.solution.splittwolisteq;
 
 import java.util.ArrayList;
 import java.util.List;

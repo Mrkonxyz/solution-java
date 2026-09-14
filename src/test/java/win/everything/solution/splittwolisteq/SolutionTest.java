@@ -1,6 +1,6 @@
-package org.example.splittwolisteq;
+package win.everything.solution.splittwolisteq;
 
-import org.example.splittwolisteq.Solution.TwoList;
+import win.everything.solution.splittwolisteq.Solution.TwoList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

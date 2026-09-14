@@ -1,4 +1,4 @@
-package org.example.twosum;
+package win.everything.solution.twosum;
 
 import java.util.HashMap;
 import java.util.Map;

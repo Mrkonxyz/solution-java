@@ -2,7 +2,7 @@ plugins {
     id 'java'
 }
 
-group = 'org.example'
+group = 'win.everything.solution'
 version = '1.0-SNAPSHOT'
 
 repositories {

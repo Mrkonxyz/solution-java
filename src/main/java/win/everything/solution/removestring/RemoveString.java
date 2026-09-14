@@ -1,4 +1,4 @@
-package org.example.removestring;
+package win.everything.solution.removestring;
 
 public class RemoveString {
 

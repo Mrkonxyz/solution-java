@@ -1,4 +1,4 @@
-package org.example.countCommas;
+package win.everything.solution.countCommas;
 
 public class CountCommas {
 
