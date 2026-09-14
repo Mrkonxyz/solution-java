@@ -25,30 +25,29 @@ public class Solution {
         }
 
         var mid = sum / 2;
-        var initialList = new ArrayList<ArrayList<Integer>>();
-        var l = new ArrayList<Integer>();
-        l.add(org.getFirst());
-        if (sumValueInList(l, 0) == mid) {
-            var l2 = new ArrayList<>(org);
-            for (var i : l) {
-                l2.remove(i);
+
+        var initialList = new ArrayList<Integer>();
+        initialList.add(org.getFirst());
+        if (sumValueInList(initialList, 0) == mid) {
+            var remainingList = new ArrayList<>(org);
+            for (var i : initialList) {
+                remainingList.remove(i);
             }
-            return new TwoList(l, l2);
+            return new TwoList(initialList, remainingList);
         }
 
-        initialList.add(l);
-        var correctList = findCorrectList(org, mid, initialList);
+        var initialPossibleList = new ArrayList<ArrayList<Integer>>();
+        initialPossibleList.add(initialList);
+        var correctList = findCorrectList(org, mid, initialPossibleList);
         if (correctList == null) {
             return null;
         }
 
-        var l1 = new ArrayList<>(correctList);
-        var l2 = new ArrayList<>(org);
-        for (var i : l1) {
-            l2.remove(i);
+        var remainingList = new ArrayList<>(org);
+        for (var i : correctList) {
+            remainingList.remove(i);
         }
-
-        return new TwoList(l1, l2);
+        return new TwoList(correctList, remainingList);
     }
 
     private List<Integer> findCorrectList(List<Integer> org, int target, ArrayList<ArrayList<Integer>> possibleList) {
@@ -57,12 +56,12 @@ public class Solution {
         }
 
         ArrayList<ArrayList<Integer>> nextPossible = new ArrayList<>();
-        for (var x: possibleList) {
-            var temp = new ArrayList<>(org);
-            for (var y : x) {
-                temp.remove(y);
+        for (var currentList : possibleList) {
+            var remainingList = new ArrayList<>(org);
+            for (var val : currentList) {
+                remainingList.remove(val);
             }
-            nextPossible.addAll(findPossibleList(x ,temp , target));
+            nextPossible.addAll(findPossibleList(currentList, remainingList, target));
         }
 
         var correctList = nextPossible.stream()
