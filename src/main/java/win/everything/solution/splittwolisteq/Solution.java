@@ -21,7 +21,7 @@ public class Solution {
             return null;
         }
 
-        int sum = sumValueInList(org, 0);
+        int sum = sumValueInList(org);
         if (isOdd(sum)) {
             return null;
         }
@@ -43,7 +43,7 @@ public class Solution {
         }
 
         var correctList = possibleList.stream()
-                .filter(v -> sumValueInList(v, 0) == target)
+                .filter(v -> sumValueInList(v) == target)
                 .findFirst()
                 .orElse(null);
 
@@ -60,15 +60,15 @@ public class Solution {
         return findCorrectList(org, target, nextPossible);
     }
 
-    private ArrayList<ArrayList<Integer>> findPossibleList(List<Integer> l1, List<Integer> l2, int target) {
-        return l2
+    private ArrayList<ArrayList<Integer>> findPossibleList(List<Integer> baseList, List<Integer> possibleValue, int target) {
+        return possibleValue
                 .stream()
                 .map(v -> {
-                    var possibleList = new ArrayList<>(l1);
+                    var possibleList = new ArrayList<>(baseList);
                     possibleList.add(v);
                     return possibleList;
                 })
-                .filter( possibleList -> sumValueInList(possibleList, 0) <= target)
+                .filter( possibleList -> sumValueInList(possibleList) <= target)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
@@ -76,6 +76,10 @@ public class Solution {
     private boolean isOdd(int n) {
         n = n < 0 ? n * -1 : n;
         return n % 2 == 1;
+    }
+
+    private int sumValueInList(List<Integer> l1) {
+        return sumValueInList(l1 , 0);
     }
 
     private int sumValueInList(List<Integer> l1, int sum) {
