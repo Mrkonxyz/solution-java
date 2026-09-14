@@ -18,11 +18,6 @@ public class Solution {
         }
 
         int sum = sumValueInList(org);
-        if (org.size() == 1 && sum != 0) {
-            return null;
-        }
-
-
         if (isOdd(sum)) {
             return null;
         }
