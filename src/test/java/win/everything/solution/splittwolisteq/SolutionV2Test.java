@@ -1,6 +1,5 @@
 package win.everything.solution.splittwolisteq;
 
-import win.everything.solution.splittwolisteq.Solution.TwoList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -15,13 +14,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-class SolutionTest {
+class SolutionV2Test {
 
-    private Solution solution;
+    private SolutionV2 solution;
 
     @BeforeEach
     void setUp() {
-        solution = new Solution();
+        solution = new SolutionV2();
     }
 
     private int sum(List<Integer> list) {
@@ -29,7 +28,7 @@ class SolutionTest {
         return list.stream().mapToInt(Integer::intValue).sum();
     }
 
-    private void assertValidEqualSumSplit(List<Integer> original, TwoList result) {
+    private void assertValidEqualSumSplit(List<Integer> original, SolutionV2.TwoList result) {
         assertNotNull(result, "Result TwoList should not be null");
         assertNotNull(result.l1(), "l1 should not be null");
         assertNotNull(result.l2(), "l2 should not be null");
@@ -55,7 +54,7 @@ class SolutionTest {
     @ParameterizedTest(name = "input = {0} -> canSplit = {1}")
     @MethodSource("testData")
     void testAllCases(List<Integer> input, boolean canSplit) {
-        var actual = solution.splitTwoListEq(input);
+        SolutionV2.TwoList actual = solution.splitTwoListEq(input);
         if (canSplit) {
             assertValidEqualSumSplit(input, actual);
         } else {
