@@ -130,16 +130,14 @@ class SolutionTest {
                 // หมวด 8: ท้าทาย Bug ของ Negative Odd Sum (เช่น -3, -7)
                 // (ใน Java: -3 % 2 == -1 ซึ่งไม่ใช่ 1 ทำให้ if (isOdd(sum)) มองว่าเป็นเลขคู่)
                 // -------------------------------------------------------------
-                Arguments.of(List.of(-1, -2), false),          // sum=-3 (odd) -> ต้องได้ null
-                Arguments.of(List.of(-2, -5), false),          // sum=-7 (odd) -> ต้องได้ null
+                Arguments.of(List.of(-1, -2), false),
+                Arguments.of(List.of(-2, -5), false),
 
                 // -------------------------------------------------------------
                 // หมวด 9: ท้าทาย Greedy vs Backtracking (Partition Problem)
                 // เคสที่แบ่งได้จริง แต่ Greedy จะเลือกตัวมากสุดก่อนแล้วทางตัน
                 // -------------------------------------------------------------
-                // [6, 5, 3, 2, 2, 2] -> sum=20, target=10: {5, 3, 2} และ {6, 2, 2}
                 Arguments.of(List.of(6, 5, 3, 2, 2, 2), true),
-                // [4, 3, 3, 2, 2, 2] -> sum=16, target=8: {4, 2, 2} และ {3, 3, 2}
                 Arguments.of(List.of(4, 3, 3, 2, 2, 2), true)
         );
     }

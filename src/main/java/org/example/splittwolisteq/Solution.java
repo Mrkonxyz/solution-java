@@ -1,7 +1,6 @@
 package org.example.splittwolisteq;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -25,50 +24,71 @@ public class Solution {
             return null;
         }
 
-        var l1 = new ArrayList<Integer>();
-        var l2 = new ArrayList<Integer>();
-        var temp = new ArrayList<Integer>(org);
+        var mid = sum / 2;
+        var initialList = new ArrayList<ArrayList<Integer>>();
+        var l = new ArrayList<Integer>();
+        l.add(org.getFirst());
+        if (sumValueInList(l, 0) == mid) {
+            var l2 = new ArrayList<>(org);
+            for (var i : l) {
+                l2.remove(i);
+            }
+            return new TwoList(l, l2);
+        }
 
-        return recursion(temp, l1, l2, sumValueInList(temp, 0) / 2, sumValueInList(temp, 0) / 2 );
+        initialList.add(l);
+        var correctList = findCorrectList(org, mid, initialList);
+        if (correctList == null) {
+            return null;
+        }
+
+        var l1 = new ArrayList<>(correctList);
+        var l2 = new ArrayList<>(org);
+        for (var i : l1) {
+            l2.remove(i);
+        }
+
+        return new TwoList(l1, l2);
     }
 
-    private TwoList recursion(ArrayList<Integer> temp, ArrayList<Integer> l1, ArrayList<Integer> l2, Integer  targetNumber, Integer  orgTargetNumber) {
-        if (targetNumber < 0 && orgTargetNumber >= 0) {
-            return null;
-        }
-        if (targetNumber > 0 && orgTargetNumber < 0) {
-            return null;
-        }
-        if (targetNumber == 0) {
-            l2.addAll(temp);
-            return new TwoList(l1, l2);
-        }
-
-        var maxNearbyTarget = findMaxNearbyTarget(targetNumber, temp, orgTargetNumber);
-        if (maxNearbyTarget == null) {
+    private List<Integer> findCorrectList(List<Integer> org, int target, ArrayList<ArrayList<Integer>> possibleList) {
+        if (possibleList.isEmpty()) {
             return null;
         }
 
-        temp.remove(maxNearbyTarget);
-        l1.add(maxNearbyTarget);
-
-        return recursion(temp, l1, l2, targetNumber - maxNearbyTarget, orgTargetNumber);
-    }
-
-    private Integer findMaxNearbyTarget(Integer target, List<Integer> list , Integer  orgTargetNumber) {
-        if (orgTargetNumber < 0 ) {
-            return list
-                    .stream()
-                    .filter(v -> v >= target)
-                    .min(Comparator.naturalOrder())
-                    .orElse(null);
+        ArrayList<ArrayList<Integer>> nextPossible = new ArrayList<>();
+        for (var x: possibleList) {
+            var temp = new ArrayList<>(org);
+            for (var y : x) {
+                temp.remove(y);
+            }
+            nextPossible.addAll(findPossibleList(x ,temp , target));
         }
-        return list
-                .stream()
-                .filter(v -> v <= target)
-                .max(Comparator.naturalOrder())
+
+        var correctList = nextPossible.stream()
+                .filter(v -> sumValueInList(v, 0) == target)
+                .findFirst()
                 .orElse(null);
+
+        if (correctList == null) {
+            return findCorrectList(org, target, nextPossible);
+        }
+
+        return correctList;
     }
+
+    private ArrayList<ArrayList<Integer>> findPossibleList(List<Integer> l1, List<Integer> l2, int target) {
+        ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
+        for (int i : l2) {
+            var possibleList = new ArrayList<Integer>(l1);
+            possibleList.add(i);
+            if (sumValueInList(possibleList, 0) <= target) {
+                result.add(possibleList);
+            }
+        }
+        return result;
+    }
+
 
     private boolean isOdd(int n) {
         n = n < 0 ? n * -1 : n;
