@@ -42,22 +42,23 @@ public class Solution {
             return null;
         }
 
-        var correctList = possibleList.stream()
+       return Optional.ofNullable(getCorrectList(org, target, possibleList))
+                .orElse(findCorrectList(org, target, generatePossibleList(org, target, possibleList)));
+    }
+
+    private List<Integer> getCorrectList(List<Integer> org, int target, ArrayList<ArrayList<Integer>> possibleList) {
+        return possibleList.stream()
                 .filter(v -> sumValueInList(v) == target)
                 .findFirst()
                 .orElse(null);
+    }
 
-        if (correctList != null) {
-            return correctList;
-        }
-
-        ArrayList<ArrayList<Integer>> nextPossible = possibleList
+    private ArrayList<ArrayList<Integer>> generatePossibleList(List<Integer> org, int target, ArrayList<ArrayList<Integer>> possibleList) {
+        return possibleList
                 .stream()
                 .map(currentList -> findPossibleList(currentList, differentList(org, currentList), target))
                 .flatMap(List::stream)
                 .collect(Collectors.toCollection(ArrayList::new));
-
-        return findCorrectList(org, target, nextPossible);
     }
 
     private ArrayList<ArrayList<Integer>> findPossibleList(List<Integer> baseList, List<Integer> possibleValue, int target) {
