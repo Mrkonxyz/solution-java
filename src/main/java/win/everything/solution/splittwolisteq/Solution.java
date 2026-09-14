@@ -17,11 +17,12 @@ public class Solution {
             return null;
         }
 
-        if (org.size() == 1) {
+        int sum = sumValueInList(org);
+        if (org.size() == 1 && sum != 0) {
             return null;
         }
 
-        int sum = sumValueInList(org);
+
         if (isOdd(sum)) {
             return null;
         }

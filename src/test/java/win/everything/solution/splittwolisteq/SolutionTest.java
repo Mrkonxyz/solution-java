@@ -122,7 +122,7 @@ class SolutionTest {
                 Arguments.of(List.of(2, 1, 1, 2, 1), false),   // sum=7
                 Arguments.of(List.of(100, 1, 2, 3), false),    // ตัวเลขตัวหนึ่งใหญ่กว่าผลรวมตัวที่เหลือทั้งหมด
                 Arguments.of(List.of(5), false),               // ตัวเดียว
-                Arguments.of(List.of(0), false),               // ตัวเดียวเป็น 0
+                Arguments.of(List.of(0), true),               // ตัวเดียวเป็น 0
                 Arguments.of(List.of(), false),                // ว่าง
                 Arguments.of(null, false),                     // null
 
@@ -138,7 +138,8 @@ class SolutionTest {
                 // เคสที่แบ่งได้จริง แต่ Greedy จะเลือกตัวมากสุดก่อนแล้วทางตัน
                 // -------------------------------------------------------------
                 Arguments.of(List.of(6, 5, 3, 2, 2, 2), true),
-                Arguments.of(List.of(4, 3, 3, 2, 2, 2), true)
+                Arguments.of(List.of(4, 3, 3, 2, 2, 2), true),
+                Arguments.of(List.of(4, 3, 3, 2, 2, 1, 1), true)
         );
     }
 }
