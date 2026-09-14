@@ -91,7 +91,7 @@ public class Solution {
     }
 
     private <T> ArrayList<T> differentList(List<T> l1, List<T> l2) {
-        ArrayList<T> result = new ArrayList<T>(l1);
+        ArrayList<T> result = new ArrayList<>(l1);
         for (T i: l2) {
             result.remove(i);
         }
