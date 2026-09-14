@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class SolutionV2 {
 
@@ -12,31 +11,33 @@ public class SolutionV2 {
     }
 
     public TwoList splitTwoListEq(List<Integer> org) {
+        return Optional.ofNullable(org)
+                .filter(this::isNotEmpty)
+                .map(this::sumValueInList)
+                .filter(this::isEven)
+                .map(this::minusTwo)
+                .map( v -> recursion(v - org.getFirst(), new ArrayList<>(org.subList(1, org.size())), new ArrayList<>(List.of(org.getFirst()))))
+                .map(v -> new TwoList(v, differentList(org, v)) )
+                .orElse(null);
+    }
 
-        if (Objects.isNull(org) || org.isEmpty()) {
-            return null;
-        }
-
-        int target = sumValueInList(org) / 2;
-        var correctList = recursion(target, new ArrayList<>(org), new ArrayList<>());
-        if (correctList == null) {
-            return null;
-        }
-
-        return new TwoList(correctList, differentList(org, correctList));
+    private Integer minusTwo(Integer n) {
+        return n / 2;
     }
 
     private List<Integer> recursion(int target, ArrayList<Integer> list, ArrayList<Integer> correctList) {
-         if (sumValueInList(correctList) == target) {
+         if (target == 0) {
              return correctList;
          }
 
-        var first = list.getFirst();
-        target = target - first;
-        int finalTarget = target;
         var val = list
                 .stream()
-                .filter(l -> l <= finalTarget)
+                .filter(v -> {
+                    var temp = target - v;
+                    var nl =  new ArrayList<>(list);
+                    nl.remove(v);
+                   return exitsInList(nl, temp) || temp == 0;
+                })
                 .findFirst()
                 .orElse(null);
 
@@ -45,8 +46,21 @@ public class SolutionV2 {
         }
         correctList.add(val);
         list.remove(val);
-        return recursion(target, list ,correctList);
+        return recursion(target - val, list ,correctList);
     }
+
+    private boolean exitsInList(List<Integer> list , int target) {
+        return Optional.of(list)
+                .map(l -> l
+                        .stream()
+                        .filter(v -> v == target)
+                        .toList()
+                )
+                .map(l -> !l.isEmpty())
+                .orElse(false);
+    }
+
+
     private int sumValueInList(List<Integer> l1) {
         return sumValueInList(l1 , 0);
     }
@@ -64,6 +78,17 @@ public class SolutionV2 {
             result.remove(i);
         }
         return result;
+    }
+
+    private boolean isEven(int n) {
+        n = n < 0 ? n * -1 : n;
+        return n % 2 == 0;
+    }
+
+    private boolean isNotEmpty(List<Integer> l) {
+        return Optional.of(l)
+                .map(v -> !v.isEmpty())
+                .orElse(false);
     }
 
 }

@@ -68,6 +68,7 @@ class SolutionTest {
                 // -------------------------------------------------------------
                 // หมวด 1: Minimal cases (2 elements)
                 // -------------------------------------------------------------
+                Arguments.of(List.of(-1, -9, -2,-8, -3, -7, -4, -6, -5, -5), true),
                 Arguments.of(List.of(1, 1), true),
                 Arguments.of(List.of(5, 5), true),
                 Arguments.of(List.of(0, 0), true),

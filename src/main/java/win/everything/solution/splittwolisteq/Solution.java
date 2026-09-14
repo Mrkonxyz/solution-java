@@ -65,7 +65,7 @@ public class Solution {
                     possibleList.add(v);
                     return possibleList;
                 })
-                .filter( possibleList -> sumValueInList(possibleList) <= target)
+                .filter( possibleList -> target > 0 ? sumValueInList(possibleList) <= target : sumValueInList(possibleList) >= target)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
