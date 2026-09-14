@@ -42,11 +42,11 @@ public class Solution {
             return null;
         }
 
-       return Optional.ofNullable(getCorrectList(org, target, possibleList))
+       return Optional.ofNullable(getCorrectList(target, possibleList))
                 .orElse(findCorrectList(org, target, generatePossibleList(org, target, possibleList)));
     }
 
-    private List<Integer> getCorrectList(List<Integer> org, int target, ArrayList<ArrayList<Integer>> possibleList) {
+    private List<Integer> getCorrectList( int target, ArrayList<ArrayList<Integer>> possibleList) {
         return possibleList.stream()
                 .filter(v -> sumValueInList(v) == target)
                 .findFirst()
