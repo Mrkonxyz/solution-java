@@ -102,6 +102,7 @@ class SolutionTest {
                 // -------------------------------------------------------------
                 Arguments.of(List.of(0, 1, 1), true),          // {1} และ {0, 1}
                 Arguments.of(List.of(0, 0, 2, 2), true),
+                Arguments.of(List.of(0, 0, 0, 0, 0), true),
                 Arguments.of(List.of(0, 2, 4), false),         // sum=6, target=3 ไม่มีคู่ที่รวมได้ 3
 
                 // -------------------------------------------------------------
