@@ -3,6 +3,8 @@ package org.example.splittwolisteq;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class Solution {
 
@@ -25,29 +27,14 @@ public class Solution {
         }
 
         var mid = sum / 2;
-
+        var initialPossibleList = new ArrayList<ArrayList<Integer>>();
         var initialList = new ArrayList<Integer>();
         initialList.add(org.getFirst());
-        if (sumValueInList(initialList, 0) == mid) {
-            var remainingList = new ArrayList<>(org);
-            for (var i : initialList) {
-                remainingList.remove(i);
-            }
-            return new TwoList(initialList, remainingList);
-        }
-
-        var initialPossibleList = new ArrayList<ArrayList<Integer>>();
         initialPossibleList.add(initialList);
-        var correctList = findCorrectList(org, mid, initialPossibleList);
-        if (correctList == null) {
-            return null;
-        }
 
-        var remainingList = new ArrayList<>(org);
-        for (var i : correctList) {
-            remainingList.remove(i);
-        }
-        return new TwoList(correctList, remainingList);
+        return Optional.ofNullable(findCorrectList(org, mid, initialPossibleList))
+                .map(correctList -> new TwoList(correctList, differentList(org, correctList)))
+                .orElse(null);
     }
 
     private List<Integer> findCorrectList(List<Integer> org, int target, ArrayList<ArrayList<Integer>> possibleList) {
@@ -55,37 +42,34 @@ public class Solution {
             return null;
         }
 
-        ArrayList<ArrayList<Integer>> nextPossible = new ArrayList<>();
-        for (var currentList : possibleList) {
-            var remainingList = new ArrayList<>(org);
-            for (var val : currentList) {
-                remainingList.remove(val);
-            }
-            nextPossible.addAll(findPossibleList(currentList, remainingList, target));
-        }
-
-        var correctList = nextPossible.stream()
+        var correctList = possibleList.stream()
                 .filter(v -> sumValueInList(v, 0) == target)
                 .findFirst()
                 .orElse(null);
 
-        if (correctList == null) {
-            return findCorrectList(org, target, nextPossible);
+        if (correctList != null) {
+            return correctList;
         }
 
-        return correctList;
+        ArrayList<ArrayList<Integer>> nextPossible = possibleList
+                .stream()
+                .map(currentList -> findPossibleList(currentList, differentList(org, currentList), target))
+                .flatMap(List::stream)
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        return findCorrectList(org, target, nextPossible);
     }
 
     private ArrayList<ArrayList<Integer>> findPossibleList(List<Integer> l1, List<Integer> l2, int target) {
-        ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
-        for (int i : l2) {
-            var possibleList = new ArrayList<Integer>(l1);
-            possibleList.add(i);
-            if (sumValueInList(possibleList, 0) <= target) {
-                result.add(possibleList);
-            }
-        }
-        return result;
+        return l2
+                .stream()
+                .map(v -> {
+                    var possibleList = new ArrayList<>(l1);
+                    possibleList.add(v);
+                    return possibleList;
+                })
+                .filter( possibleList -> sumValueInList(possibleList, 0) <= target)
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
 
@@ -99,5 +83,13 @@ public class Solution {
             return sum;
         }
         return sumValueInList(l1.subList(1, l1.size()), sum + l1.getFirst());
+    }
+
+    private <T> ArrayList<T> differentList(List<T> l1, List<T> l2) {
+        ArrayList<T> result = new ArrayList<T>(l1);
+        for (T i: l2) {
+            result.remove(i);
+        }
+        return result;
     }
 }
