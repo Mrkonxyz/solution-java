@@ -62,7 +62,7 @@ public class Solution {
                 .stream()
                 .map(baseList -> findPossibleList(baseList, differentList(org, baseList), target))
                 .flatMap(m -> m.entrySet().stream())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (n , r) -> r));
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (existing , replacement) -> replacement));
     }
 
     private Map<Integer, ArrayList<Integer>> findPossibleList(List<Integer> baseList, List<Integer> remainingVal, int target) {
