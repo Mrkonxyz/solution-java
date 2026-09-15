@@ -1,7 +1,9 @@
 package win.everything.solution.splittwolisteq;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -19,17 +21,17 @@ public class Solution {
                 .map(this::sumValueInList)
                 .filter(this::isEven)
                 .map(this::minusTwo)
-                .map(mid -> findCorrectList(org, mid, initialPossibleList(org.getFirst())))
+                .map(mid -> findCorrectList(org, mid, initialFirstMap().apply(org)))
                 .map(toResult)
                 .orElse(null);
     }
 
-    private ArrayList<ArrayList<Integer>> initialPossibleList(Integer firstElement) {
-        var initialPossibleList = new ArrayList<ArrayList<Integer>>();
-        var initialList = new ArrayList<Integer>();
-        initialList.add(firstElement);
-        initialPossibleList.add(initialList);
-        return initialPossibleList;
+    private Function<List<Integer> ,  Map<Integer, ArrayList<Integer>>> initialFirstMap() {
+      return org -> {
+          Map<Integer, ArrayList<Integer>> initialPossibleList = new HashMap<>();
+          initialPossibleList.put(sumValueInList(List.of(org.getFirst())), new ArrayList<>(List.of(org.getFirst())));
+          return initialPossibleList;
+      };
     }
 
     private Function<List<Integer>, TwoList> toResult(List<Integer> org) {
@@ -44,35 +46,37 @@ public class Solution {
         return input != null && !input.isEmpty();
     }
 
-    private  List<Integer> findCorrectList(List<Integer> org, int target, ArrayList<ArrayList<Integer>> possibleList) {
-       return possibleList.isEmpty() ? null
-               : Optional.ofNullable(getCorrectList(target, possibleList))
-                .orElse(findCorrectList(org, target, generatePossibleList(org, target, possibleList)));
+    private  List<Integer> findCorrectList(List<Integer> org, int target, Map<Integer, ArrayList<Integer>> mapPossibleList) {
+       return mapPossibleList.isEmpty() ? null
+               : Optional.ofNullable(getCorrectList(target, mapPossibleList))
+                .orElse(findCorrectList(org, target, generatePossibleList(org, target, mapPossibleList)));
     }
 
-    private List<Integer> getCorrectList( int target, ArrayList<ArrayList<Integer>> possibleList) {
-        return possibleList.stream()
-                .filter(v -> sumValueInList(v) == target)
-                .findFirst()
-                .orElse(null);
+    private List<Integer> getCorrectList(int target, Map<Integer,  ArrayList<Integer>> mapPossibleList) {
+        return mapPossibleList.getOrDefault(target, null);
     }
 
-    private ArrayList<ArrayList<Integer>> generatePossibleList(List<Integer> org, int target, ArrayList<ArrayList<Integer>> possibleList) {
+    private Map<Integer, ArrayList<Integer>> generatePossibleList(List<Integer> org, int target,  Map<Integer, ArrayList<Integer>> possibleList) {
         return possibleList
+                .values()
                 .stream()
-                .map(currentList -> findPossibleList(currentList, differentList(org, currentList), target))
-                .flatMap(List::stream)
-                .collect(Collectors.toCollection(ArrayList::new));
+                .map(baseList -> findPossibleList(baseList, differentList(org, baseList), target))
+                .flatMap(m -> m.entrySet().stream())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (n , r) -> r));
     }
 
-    private ArrayList<ArrayList<Integer>> findPossibleList(List<Integer> baseList, List<Integer> possibleValue, int target) {
+    private Map<Integer, ArrayList<Integer>> findPossibleList(List<Integer> baseList, List<Integer> remainingVal, int target) {
         var newAndAdd = newArrayAndAndVal(baseList);
         var isPossible = possibleListCondition(target);
-        return possibleValue
+        return remainingVal
                 .stream()
                 .map(newAndAdd)
                 .filter(isPossible)
-                .collect(Collectors.toCollection(ArrayList::new));
+                .collect(Collectors.toMap(
+                        this::sumValueInList,
+                        v-> v,
+                        (existing, replacement) -> replacement)
+                );
     }
 
     private Predicate<List<Integer>> possibleListCondition(int target) {
