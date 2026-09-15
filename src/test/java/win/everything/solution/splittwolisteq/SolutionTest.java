@@ -146,7 +146,8 @@ class SolutionTest {
                 // เคสที่แบ่งได้จริง แต่ Greedy จะเลือกตัวมากสุดก่อนแล้วทางตัน
                 // -------------------------------------------------------------
                 Arguments.of(List.of(4, 3, 3, 2, 2, 1, 1), true),
-                Arguments.of(List.of(7, 1, 3, 2, 3, 6, 7, 1), true)
+                Arguments.of(List.of(7, 1, 3, 2, 3, 6, 7, 1), true),
+                Arguments.of(List.of(-7, -1, -3, -2, -3, -6, -7, -1), true)
         );
     }
 }

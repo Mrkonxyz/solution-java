@@ -15,23 +15,21 @@ public class Solution {
     }
 
     public TwoList splitTwoListEq(List<Integer> org) {
-        var toResult = toResult(org);
+
         return Optional.ofNullable(org)
                 .filter(this::isNotEmpty)
                 .map(this::sumValueInList)
                 .filter(this::isEven)
                 .map(this::minusTwo)
-                .map(mid -> findCorrectList(org, mid, initialFirstMap().apply(org)))
-                .map(toResult)
+                .map(mid -> findCorrectList(org, mid, initialFirstMap(org)))
+                .map(toResult(org))
                 .orElse(null);
     }
 
-    private Function<List<Integer> ,  Map<Integer, ArrayList<Integer>>> initialFirstMap() {
-      return org -> {
+    private  Map<Integer, ArrayList<Integer>> initialFirstMap(List<Integer> org) {
           Map<Integer, ArrayList<Integer>> initialPossibleList = new HashMap<>();
           initialPossibleList.put(sumValueInList(List.of(org.getFirst())), new ArrayList<>(List.of(org.getFirst())));
           return initialPossibleList;
-      };
     }
 
     private Function<List<Integer>, TwoList> toResult(List<Integer> org) {
